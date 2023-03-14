@@ -11,7 +11,7 @@ export default function Root() {
   // Render Sign Up + Log In buttons if user is signed out
   // Render Open button if user is signed in
   function AccessButtons() {
-    if (null == null) {
+    if (auth.currentUser == null) {
       return (
         <>
           <button onClick={() => navigate("/login")} className="bg-white rounded p-1 px-4 m-2">LOG IN</button>
@@ -30,10 +30,15 @@ export default function Root() {
   return (
     <div className="Root flex flex-col justify-center items-center h-[100svh] bg-honey-flower-800">
       <h1 className="text-2xl font-bold text-white">Welcome to Mysty.</h1>
-      <p className="text-xl text-white text-center mb-4">Send and receive lovely messages from anonymous followers!</p>
-      <div className="flex">
+      <p className="text-xl text-white text-center">Create a profile to receive anonymous letters!</p>
+      <p className="text-md text-white text-center">Registration required.</p>
+      <div className="flex m-4">
         <AccessButtons />
       </div>
+
+      <p className="text-xl text-white text-center">Or send them?</p>
+      <p className="text-md text-white text-center">Sending doesn't require registration.</p>
+      <button onClick={() => navigate("/send")} className="bg-white rounded p-1 px-4 m-4">WRITE A LETTER</button>
     </div>
   );
 }

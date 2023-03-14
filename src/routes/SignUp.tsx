@@ -1,7 +1,7 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { ref, get, set } from 'firebase/database';
-import { database as db, auth } from '../firebase';
-import { useState } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { ref, get, set } from 'firebase/database'
+import { database as db, auth } from '../firebase'
+import { useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom';
 
