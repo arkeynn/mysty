@@ -1,15 +1,9 @@
-import { auth } from '../firebase'
 import { useNavigate } from 'react-router-dom'
-
-interface IAccessButtons {
-  isSignedIn: boolean
-}
+import { auth } from '../firebase'
 
 export default function Root() {
   const navigate = useNavigate();
 
-  // Render Sign Up + Log In buttons if user is signed out
-  // Render Open button if user is signed in
   function AccessButtons() {
     if (auth.currentUser == null) {
       return (

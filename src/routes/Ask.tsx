@@ -1,44 +1,63 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { ref, get, set } from 'firebase/database'
-import { database as db } from '../firebase'
+
+import { DatabaseReference, ref, set, onValue } from 'firebase/database'
+import { db } from '../firebase'
+
 import { v4 as uuidv4 } from 'uuid'
 
-interface ILetterForm {
+type LetterForm = {
   title: string
-  message: string;
+  content: string;
   hint: string;
+};
+
+type Letter = {
+  title: string,
+  content: string,
+  hint: string,
+  timestamp: number
+};
+
+function blockIfUserIsInvalid(usernamesRef: DatabaseReference, navigate: Function) {
+  return onValue(usernamesRef, (snapshot) => {
+    if (!snapshot.exists()) {
+      navigate("/notfound");
+    }
+  }, {onlyOnce: true});
+}
+
+function sendToInbox(usernamesRef: DatabaseReference, letterUUID: string, letterTimestamp: number, form: LetterForm) {
+  return onValue(usernamesRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const userUID = snapshot.val().uid;
+      const inboxRef = ref(db, `/inbox/${userUID}/${letterUUID}`);
+
+      const letter : Letter = {
+        title: form.title,
+        content: form.content,
+        hint: form.hint,
+        timestamp: letterTimestamp
+      };
+
+      set(inboxRef, letter);
+    }
+  }, {onlyOnce: true});
 }
 
 export default function Ask() {
   const navigate = useNavigate();
   const { username } = useParams();
 
-  let usernamesRef = ref(db, `/usernames/${username}`);
-  get(usernamesRef)
-    .then((snapshot) => {
-      if (!snapshot.exists())
-        navigate("/notfound");
-    });
+  const usernamesRef = ref(db, `/usernames/${username}`);
+  blockIfUserIsInvalid(usernamesRef, navigate);
+  
+  const { register, handleSubmit } = useForm<LetterForm>();
+  const onSubmit: SubmitHandler<LetterForm> = form => {
+    const letterUUID = uuidv4();
+    const letterTimestamp = Date.now();
 
-  const { register, handleSubmit } = useForm<ILetterForm>();
-  const onSubmit: SubmitHandler<ILetterForm> = data => {
-    let timestamp = Date.now();
-    let uuid = uuidv4();
-
-    let usernamesRef = ref(db, `/usernames/${username}`);
-    get(usernamesRef)
-      .then((snapshot) => {
-        if (!snapshot.exists()) return;
-
-        let userUid = snapshot.val().uid;
-
-        let inboxRef = ref(db, `/inbox/${userUid}/${uuid}`);
-        set(inboxRef, {title: data.title, message: data.message, hint: data.hint, timestamp: timestamp});
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
+    sendToInbox(usernamesRef, letterUUID, letterTimestamp, form);
   };
 
   return (
@@ -52,7 +71,7 @@ export default function Ask() {
 
         <label className="block mb-4 text-md">
           Write whatever you want.
-          <textarea {...register("message")} className="block w-full border-[1px] rounded border-bastille-900" required />
+          <textarea {...register("content")} className="block w-full border-[1px] rounded border-bastille-900" required />
         </label>
 
         <label className="block mb-4 text-md">

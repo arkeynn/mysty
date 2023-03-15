@@ -1,5 +1,5 @@
-import { auth } from '../firebase'
 import { Navigate } from 'react-router-dom';
+import { auth } from '../firebase'
 
 import Inbox from '../components/Inbox';
 
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <h1>Hello, {currentUser.email}!</h1>
-      <Inbox userUid = { currentUser.uid } />
+      <Inbox userUID = { currentUser.uid } />
     </>
   );
 }

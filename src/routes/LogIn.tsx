@@ -1,29 +1,24 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form'
+
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase'
-import { useState } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom';
 
-interface ILoginForm {
-  email: string;
-  password: string;
-}
+type LoginForm = {
+  email: string,
+  password: string,
+};
 
 export default function LogIn() {
   const [errorMessage, setErrorMessage] = useState("");
-
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm<ILoginForm>();
-  const onSubmit: SubmitHandler<ILoginForm> = data => {
+  const { register, handleSubmit } = useForm<LoginForm>();
+  const onSubmit: SubmitHandler<LoginForm> = data => {
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then((credentials) => {
-        navigate("/home");
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-        return <h1>XD</h1>
-      });
+      .then((credentials) => { navigate("/home") })
+      .catch((error) => { setErrorMessage(error.message) });
   };
 
   return (
