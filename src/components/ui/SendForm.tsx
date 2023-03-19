@@ -22,6 +22,7 @@ type Letter = {
   content: string;
   hint: string;
   timestamp: number;
+  read: boolean;
 }
 
 function sendToInbox(usernamesRef: DatabaseReference, letterUUID: string, letterTimestamp: number, form: LetterForm) {
@@ -34,7 +35,8 @@ function sendToInbox(usernamesRef: DatabaseReference, letterUUID: string, letter
         title: form.title,
         content: form.content,
         hint: form.hint,
-        timestamp: letterTimestamp
+        timestamp: letterTimestamp,
+        read: false,
       };
 
       set(inboxRef, letter);
