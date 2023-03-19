@@ -1,13 +1,13 @@
 type ClosedLetterProps = {
   letter: Letter
-};
+}
 
 type Letter = {
   title: string,
   content: string,
   hint: string,
   timestamp: number
-};
+}
 
 export default function ClosedLetter({ letter }: ClosedLetterProps) {
   return (
