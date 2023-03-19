@@ -1,21 +1,21 @@
 import { useState } from 'react'
 
 import { DataSnapshot, ref, onValue } from 'firebase/database'
-import { db } from '../firebase'
+import { db } from '../../firebase'
 
-import ClosedLetter from './ClosedLetter';
+import ClosedLetter from './ClosedLetter'
 
 type InboxProps = {
   userUID: string
-};
+}
 
 type Letter = {
   id?: string | null // uuid - React list index
-  title: string,
-  content: string,
-  hint: string,
-  timestamp: number
-};
+  title: string;
+  content: string;
+  hint: string;
+  timestamp: number;
+}
 
 function saveLetter(snapshot: DataSnapshot): Letter {
   const info = snapshot.val();
@@ -49,8 +49,8 @@ export default function Inbox( { userUID }: InboxProps ) {
   };
 
   return (
-    <div className="Inbox flex flex-col">
-      <button onClick={onClick}>Refresh</button>
+    <div className="">
+      <button className="bg-transparent border-2 border-white rounded p-1 px-4 mt-2 mb-8" onClick={onClick}>Check</button>
       {
         letters.map((letter) => <ClosedLetter letter={letter} />)
       }

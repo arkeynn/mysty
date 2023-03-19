@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        "eyecatcher": ["Lilita One"],
+        "eyecatcher": ["Lilita One", "cursive"],
+        "poppins": ["Poppins", "sans-serif"]
       }
     },
   },
