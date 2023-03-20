@@ -3,28 +3,25 @@ import { useState, useEffect } from 'react'
 import { DataSnapshot, ref, onValue } from 'firebase/database'
 import { db } from '../../firebase'
 
+import { Letter } from '../../types'
+
 import ClosedLetter from './ClosedLetter'
 
 type InboxProps = {
   userUID: string
 }
 
-type Letter = {
-  id?: string | null // uuid - React list index
-  title: string;
-  content: string;
-  hint: string;
-  timestamp: number;
-  read: boolean;
-}
-
 function saveLetter(snapshot: DataSnapshot): Letter {
   const info = snapshot.val();
   const letter: Letter = {
     id: snapshot.key,
+  
     title: info.title,
     content: info.content,
     hint: info.hint,
+
+    hasMedia: info.hasMedia,
+
     timestamp: info.timestamp,
     read: info.read
   };

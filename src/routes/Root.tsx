@@ -70,11 +70,6 @@ export default function Root() {
         <p className="text-lg" >Follow common sense, and practice internet safety!</p>
       </Section>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#fbbf24" fill-opacity="1" d="M0,128L240,288L480,32L720,160L960,32L1200,288L1440,224L1440,0L1200,0L960,0L720,0L480,0L240,0L0,0Z"></path></svg>
-
-      <Section className="font-eyecatcher text-center">
-      <p className="text-lg" >Fork the project on Github!</p>
-        <p className="text-lg" >https://github.com/arkeynn/mysty</p>
-      </Section>
     </>
   )
 }

@@ -33,7 +33,7 @@ export default function Home() {
       
       <div className="text-lg mb-12">
         <p>Your invite link: </p>
-        <Link className="text-violet-600" to={`/ask/${username}`}>{window.location.origin}/#/ask/{username}</Link>
+        <Link className="text-violet-600" to={`/ask/${username}`}>{window.location.origin}/ask/{username}</Link>
         <p>Share it to receive letters!</p>
       </div>
 
