@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../firebase'
 
 import Section from '../components/ui/Section'
@@ -14,15 +15,18 @@ export default function Root() {
   const [isSending, setIsSending] = useState(false);
   const [isAlreadyLoggedIn, setIsAlreadyLoggedIn] = useState(false);
 
+
   const navigate = useNavigate();
 
   // Check if user is already logged in their account.
   useEffect(() => {
-    const currentUser = auth.currentUser;
-
-    if (currentUser != null) {
-      setIsAlreadyLoggedIn(true);
-    };
+    return onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAlreadyLoggedIn(true);
+      } else {
+        setIsAlreadyLoggedIn(false);
+      }
+    });
   }, []);
 
   return (
@@ -32,7 +36,7 @@ export default function Root() {
         <p className="text-lg" >Send anonymous letters..</p>
         <p className="text-lg mb-4" >Receive anonymous letters..</p>
 
-        <button hidden={isAlreadyLoggedIn}  onClick={() => setIsLoggingIn(!isLoggingIn)} className="bg-transparent border-2 border-white rounded p-1 px-4">Log In</button>
+        <button hidden={isLoggingIn || isAlreadyLoggedIn}  onClick={() => setIsLoggingIn(!isLoggingIn)} className="bg-transparent border-2 border-white rounded p-1 px-4">Log In</button>
         <button hidden={!isAlreadyLoggedIn}  onClick={() => navigate("/home")} className="bg-transparent border-2 border-white rounded p-1 px-4">Open</button>
         <LoginForm hidden={!isLoggingIn}  />
       </Section>

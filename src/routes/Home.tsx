@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { auth, db } from '../firebase'
 import { DatabaseReference, ref, onValue } from 'firebase/database'
@@ -33,7 +33,7 @@ export default function Home() {
       
       <div className="text-lg mb-12">
         <p>Your invite link: </p>
-        <a href={`/ask/${username}`} className="text-violet-600 mb-2">{window.location.host}/ask/{username}</a>
+        <Link className="text-violet-600" to={`/ask/${username}`}>{window.location.origin}/#/ask/{username}</Link>
         <p>Share it to receive letters!</p>
       </div>
 
