@@ -17,6 +17,7 @@ dist-ssr
 database.rules.json
 firebase.json
 .firebaserc
+.firebase/
 
 # Editor directories and files
 .vscode/*
