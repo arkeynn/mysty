@@ -10,3 +10,10 @@ export type Letter = {
   read: boolean;
   timestamp: number;
 }
+
+export interface LetterForm {
+  title: string
+  content: string;
+  hint: string;
+  file?: FileList;
+}
