@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { auth, db } from '../firebase'
-import { DatabaseReference, ref, onValue } from 'firebase/database'
+import { ref, onValue } from 'firebase/database'
 
-import Section from '../components/ui/Section'
-import Inbox from '../components/ui/Inbox'
+import Inbox from '../components/ui/letters/Inbox'
+import Question from '../components/ui/forms/Question'
 
 export default function Home() {
   const [username, setUsername] = useState("");
   const {currentUser} = auth;
+  const navigate = useNavigate();
 
-  if (currentUser == null) {
-    return <Navigate to="/" />
-  }
-
-  // Fetch their username and save to state.
   useEffect(() => {
+    // Check if user is logged in
+    if (currentUser == null)
+      return navigate("/"); 
+
     const usernameRef = ref(db, `/users/${currentUser.uid}/username`);
 
+    // Fetch their username
     return onValue(usernameRef, (snapshot) => {
       setUsername(snapshot.val());
     }, {onlyOnce: true});    
@@ -37,9 +38,14 @@ export default function Home() {
         <p>Share it to receive letters!</p>
       </div>
 
+      <div className="text-lg mb-12">
+        <p>Create a question? </p>
+        <Question username={username} />
+      </div>
+
       <p className="text-lg">This is your inbox.</p>
       <p className="text-lg">Letters from your fans appear below.</p>
-      <Inbox userUID ={currentUser.uid} />
+      <Inbox />
     </div>
   );
 }

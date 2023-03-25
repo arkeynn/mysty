@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { DatabaseReference, ref, onValue } from 'firebase/database'
+import { ref, onValue } from 'firebase/database'
 import { db } from '../firebase'
 
 import Sender from '../components/ui/forms/Sender'

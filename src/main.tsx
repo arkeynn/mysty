@@ -8,7 +8,10 @@ import { auth } from './firebase'
 import Root from './routes/Root'
 import Send from './routes/Send'
 import Home from './routes/Home'
+import AnswerQuestion from './routes/AnswerQuestion'
 import NotFound from './routes/NotFound'
+
+
 import './index.css'
 
 const router = createHashRouter([
@@ -23,6 +26,10 @@ const router = createHashRouter([
   {
     path: "ask/:username",
     element: <Send />
+  },
+  {
+    path: "q/:username/:questionId",
+    element: <AnswerQuestion />
   },
   {
     path: "notfound",

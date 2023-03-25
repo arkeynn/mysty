@@ -1,39 +1,37 @@
 import { useState, useEffect } from 'react'
 
+import { auth, storage, db } from '../../../firebase'
 import { ref, update } from 'firebase/database'
 import { ref as storageRef, getBlob } from 'firebase/storage'
-import { storage, db } from '../../firebase'
 
-import { Letter } from '../../types'
-
+import { Letter } from '../../../types'
 import PopUpMedia from './PopUpMedia'
 
-type ClosedLetterProps = {
-  userUID: string;
+interface Props {
   letter: Letter;
 }
 
-export default function ClosedLetter({ userUID, letter }: ClosedLetterProps) {
+export default function ReceivedLetter({ letter }: Props) {
   const [media, setMedia] = useState<Blob>(new Blob());
   const [opened, setOpened] = useState(false);
   const [color, setColor] = useState(letter.read ? "bg-neutral-600" : "bg-red-600");
+  const {currentUser} = auth;
 
   useEffect(() => {
-    if (letter.hasMedia) {
-      const mediaRef = storageRef(storage, `inbox/${userUID}/${letter.id}`);
+    if (!letter.hasMedia) return;
 
-      getBlob(mediaRef)
-        .then((blob) => {
-          setMedia(blob);
-        });
-    }
+    const mediaRef = storageRef(storage, `inbox/${currentUser?.uid}/${letter.id}`);
+    getBlob(mediaRef)
+      .then((blob) => {
+        setMedia(blob);
+      });
   }, []);
 
   const openLetter = () => {
     setOpened(true);
   
     if (!letter.read) {
-      const readRef = ref(db, `/inbox/${userUID}/${letter.id}`);
+      const readRef = ref(db, `/inbox/${currentUser?.uid}/${letter.id}`);
 
       letter.read = true;
       update(readRef, {read: "true"});
