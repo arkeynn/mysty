@@ -10,7 +10,7 @@ interface Form {
   password: string;
 }
 
-export default function Login({...props}: ComponentPropsWithoutRef<"div">) {
+export default function LogIn({...props}: ComponentPropsWithoutRef<"div">) {
   const [error, setError] = useState("");
   const {register, handleSubmit} = useForm<Form>();
   const navigate = useNavigate();

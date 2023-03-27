@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, createHashRouter, RouterProvider } from 'react-router-dom'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { setPersistence, browserLocalPersistence } from 'firebase/auth'
 import { auth } from './firebase'
@@ -11,10 +11,7 @@ import Home from './routes/Home'
 import AnswerQuestion from './routes/AnswerQuestion'
 import NotFound from './routes/NotFound'
 
-
-import './index.css'
-
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
@@ -39,8 +36,8 @@ const router = createHashRouter([
 
 setPersistence(auth, browserLocalPersistence);
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </StrictMode>
 )
